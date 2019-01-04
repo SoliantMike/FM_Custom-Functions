@@ -1,6 +1,6 @@
 /*
  * @SIGNATURE:
- * #ErrorCode
+ * #GetErrorDesc
  * 
  * @PARAMETERS:
  * errorcode
@@ -18,7 +18,7 @@
  * @NOTES:
  * This function requires JSON functions available in FileMaker 16+
  * Usage example:
- * GetError ( Get ( LastError ) )
+ * GetErrorDesc ( Get ( LastError ) )
  * 
  */
 
