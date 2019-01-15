@@ -1,0 +1,57 @@
+/*
+ * @SIGNATURE:
+ * #OAuth1a_Header
+ * 
+ * @PARAMETERS:
+ * oauth_consumer_key
+ * oauth_consumer_secret
+ * oauth_token_secret
+ * method
+ * url_base
+ * url_query
+ * 
+ * @HISTORY:
+ * Created: 2019-01-15 by Mike Duncan
+ * 
+ * @PURPOSE:
+ * Generate the string required to authenticate using Oauth 1.0a
+ *  
+ * @RESULT:
+ * OAuth 1.0a signature and header to use with cURL options when working with REST services.
+ * 
+ * @NOTES:
+ * GetAsURLEncoded does not handle colons, so we substitute those explicitly. Some implementations do not require a token_secret
+ * in which case you can leave blank. Other services may not require "oauth_version" in which case you can remove from the
+ * base variable where it is below.
+ * Usage example:
+ * OAuth_1_Header ( "my_consumer_key" ; "my_consumer_secret" ; "token_secret" ; "GET" ; "https://api.endpoint.sample/v1/endpoint" ; "?user=Mike" )
+ * 
+ */
+
+Let ( [
+  
+  oauth_timestamp = Round ( (GetAsNumber ( Get ( CurrentTimeUTCMilliseconds ) )/1000) - ( GetAsNumber ( Date(1;1;1970) ) * 86400 ) + ( 24*60*60 ); 0);
+  oauth_nonce = GetAsNumber ( Get ( CurrentTimestamp ) );
+
+  query_string = Case ( isEmpty ( url_query ) ; "" ; url_query & "&" ) & "oauth_consumer_key=" & oauth_consumer_key & "&oauth_nonce=" & oauth_nonce & "&oauth_signature_method=HMAC-SHA1&oauth_timestamp=" & oauth_timestamp & "&oauth_version=1.0";
+
+  base = method & "&" & Substitute ( GetAsURLEncoded ( url_base ) ; ":" ; "%3A" ) & "&" & Substitute ( GetAsURLEncoded ( query_string ) ; ":" ; "%3A" );
+ 
+  key = GetAsURLEncoded ( oauth_consumer_secret ) & "&" & GetAsURLEncoded ( oauth_token_secret );
+  sig_encode = CryptAuthCode ( base ; "SHA1" ; key );
+  oauth_signature = Base64EncodeRFC ( 4648; sig_encode );
+
+  end = ""
+
+];
+
+ "Authorization: OAuth " &
+ "oauth_consumer_key=" & oauth_consumer_key &"," &
+ "oauth_token=" & oauth_consumer_key &"," &
+ "oauth_signature_method=HMAC-SHA1," &
+ "oauth_signature=" & oauth_signature & "," &
+ "oauth_timestamp=" & oauth_timestamp & "," &
+ "oauth_nonce=" & oauth_nonce & "," &
+ "oauth_version=1.0"
+
+)
