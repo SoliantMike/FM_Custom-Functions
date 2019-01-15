@@ -24,7 +24,7 @@
  * in which case you can leave blank. Other services may not require "oauth_version" in which case you can remove from the
  * base variable where it is below.
  * Usage example:
- * OAuth_1_Header ( "my_consumer_key" ; "my_consumer_secret" ; "token_secret" ; "GET" ; "https://api.endpoint.sample/v1/endpoint" ; "?user=Mike" )
+ * OAuth_1_Header ( "my_consumer_key" ; "my_consumer_secret" ; "token_secret" ; "GET" ; "https://api.endpoint.sample/v1/endpoint" ; "user=Mike" )
  * 
  */
 
