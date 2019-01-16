@@ -47,7 +47,6 @@ Let ( [
 
  "Authorization: OAuth " &
  "oauth_consumer_key=" & oauth_consumer_key &"," &
- "oauth_token=" & oauth_consumer_key &"," &
  "oauth_signature_method=HMAC-SHA1," &
  "oauth_signature=" & oauth_signature & "," &
  "oauth_timestamp=" & oauth_timestamp & "," &
