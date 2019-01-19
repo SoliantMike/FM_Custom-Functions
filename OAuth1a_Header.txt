@@ -23,8 +23,11 @@
  * GetAsURLEncoded does not handle colons, so we substitute those explicitly. Some implementations do not require a token_secret
  * in which case you can leave blank. Other services may not require "oauth_version" in which case you can remove from the
  * base variable where it is below.
- * Usage example:
- * OAuth1a_Header ( "my_consumer_key" ; "my_consumer_secret" ; "token_secret" ; "GET" ; "https://api.endpoint.sample/v1/endpoint" ; "user=Mike" )
+ * Usage example in cURL options:
+ * " --request GET" &
+ * " --header \"Accept: */*\"" &
+ * " --header \"Content-Type: application/json\"" &
+ * " --header \"" & OAuth1a_Header ( "my_consumer_key" ; "my_consumer_secret" ; "token_secret" ; "GET" ; "https://api.endpoint.sample/v1/endpoint" ; "user=Mike" ) & "\""
  * 
  */
 
