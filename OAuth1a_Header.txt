@@ -36,7 +36,7 @@ Let ( [
   oauth_timestamp = Round ( (GetAsNumber ( Get ( CurrentTimeUTCMilliseconds ) )/1000) - ( GetAsNumber ( Date(1;1;1970) ) * 86400 ) + ( 24*60*60 ); 0);
   oauth_nonce = GetAsNumber ( Get ( CurrentTimestamp ) );
 
-  query_string = Case ( isEmpty ( url_query ) ; "" ; url_query & "&" ) & "oauth_consumer_key=" & oauth_consumer_key & "&oauth_nonce=" & oauth_nonce & "&oauth_signature_method=HMAC-SHA1&oauth_timestamp=" & oauth_timestamp & "&oauth_version=1.0";
+  query_string = "oauth_consumer_key=" & oauth_consumer_key & "&oauth_nonce=" & oauth_nonce & "&oauth_signature_method=HMAC-SHA1&oauth_timestamp=" & oauth_timestamp & "&oauth_version=1.0" & Case ( IsEmpty ( url_query ) ; "" ; "&" & url_query  );
 
   base = method & "&" & Substitute ( GetAsURLEncoded ( url_base ) ; ":" ; "%3A" ) & "&" & Substitute ( GetAsURLEncoded ( query_string ) ; ":" ; "%3A" );
  
