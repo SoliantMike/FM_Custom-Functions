@@ -25,6 +25,15 @@
  *   Show Custom Dialog [ "Error" ; "There was an error evaluating variables: " & JSONGetElement ( $json_debug ; "json" ) & " - " & GetErrorDesc_en ( JSONGetElement ( $json_debug ; "json" ) )]
  *   Exit Script [ Text Result: 5 //invalid command ]
  * End If
+ *  
+ * Example of setting a script parameter:
+ * JSONSetElement ( "" 
+ * 
+ *  ; [ "var1" ; "hello" ; JSONString ]
+ *  ; [ "var2" ; "world" ; JSONString ]
+ *  ; [ "var3" ; "ping" ; JSONString ]
+ * 
+ * )
  * 
  */
  
