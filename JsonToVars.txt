@@ -1,0 +1,62 @@
+/*
+ * @SIGNATURE:
+ * #JsonToVars
+ * 
+ * @PARAMETERS:
+ * json
+ * 
+ * @HISTORY:
+ * Created: 2020-04-13 by Mike Duncan
+ * 
+ * @PURPOSE:
+ * Handle setting variables from JSON automatically
+ * 
+ * @RESULT:
+ * Zero if no error, or an error code if there was an error setting a variable
+ * 
+ * @NOTES:
+ * This function requires JSON functions available in FileMaker 16+
+ * And also the WHILE function available in FileMaker 18+
+ * Usage example:
+ * JsonToVars ( Get ( ScriptParameter ) )
+ * 
+ * then test for errors and show dialog in FM script.
+ * If [JsonToVars ( Get ( ScriptParameter ) )]
+ *   Show Custom Dialog [ "Error" ; "There was an error evaluating variables: " & JSONGetElement ( $json_debug ; "json" ) & " - " & GetErrorDesc_en ( JSONGetElement ( $json_debug ; "json" ) )]
+ *   Exit Script [ Text Result: 5 //invalid command ]
+ * End If
+ * 
+ */
+ 
+ Case (isEmpty ( json );
+ // required value missing, return an error
+ Let ( $json_debug = JSONSetElement ( "" ; "json" ; "10" ; JSONString ) ; "" )
+ & $json_debug
+ ;
+ 
+  While ( 
+   [
+    json = Get ( ScriptParameter );
+    namespace = "_";
+    json_keys = JSONListKeys ( json ; "" );
+    count = ValueCount ( json_keys );
+    json_err = "";
+    this_err = 0
+   ];
+  
+   ( count > 0 ) and ( this_err = 0 );
+  
+   [
+    this_key = GetValue ( json_keys ; count );
+    this_value = JSONGetElement ( json ; this_key );
+    this_evaluate = "Let ( $" & namespace & this_key & " = \"" & this_value & "\"; \"\")";
+    this_err = EvaluationError ( Evaluate ( this_evaluate ) );
+    $json_debug = JSONSetElement ( json_err ; [ this_key ; this_err ; JSONString ] ; [ "json" ; this_err ; JSONString ] );
+    count = count - 1
+   ];
+
+  this_err
+
+ )
+
+)
