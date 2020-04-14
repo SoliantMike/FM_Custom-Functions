@@ -45,7 +45,6 @@
  
   While ( 
    [
-    json = Get ( ScriptParameter );
     namespace = "_";
     json_keys = JSONListKeys ( json ; "" );
     count = ValueCount ( json_keys );
